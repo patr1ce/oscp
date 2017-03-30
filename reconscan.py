@@ -343,7 +343,6 @@ if __name__=='__main__':
     for scanip in targets:
         scanip = scanip.rstrip()
         if not scanip in dirs:
-            print datetime.datetime.now()
             print bcolors.HEADER + "INFO: No folder was found for " + scanip + ". Setting up folder." + bcolors.ENDC
             subprocess.check_output("mkdir " + path + "exam/" + scanip, shell=True)
             subprocess.check_output("mkdir " + path + "exam/" + scanip + "/exploits", shell=True)
@@ -354,9 +353,10 @@ if __name__=='__main__':
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " + path +"exam/" + scanip + bcolors.ENDC
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-windows.md", shell=True)
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
-            print datetime.datetime.now()
+            
 
-
-
+        print bcolors.OKGREEN + datetime.datetime.now()
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
         p.start()
+        print bcolors.OKGREEN + datetime.datetime.now()
+
