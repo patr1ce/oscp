@@ -350,7 +350,7 @@ if __name__=='__main__':
             subprocess.check_output("mkdir /" + path + "exam/" + scanip + "/privesc", shell=True)
             print bcolors.OKGREEN + "INFO: Folder created here: " + path + "exam/" + scanip + bcolors.ENDC
             subprocess.check_output("cp " + path + "reports/windows-template.md " + path + "exam/" + scanip + "/mapping-windows.md", shell=True)
-            subprocess.check_output("cp " + path + "    reports/linux-template.md " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
+            subprocess.check_output("cp " + path + "reports/linux-template.md " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " + path +"exam/" + scanip + bcolors.ENDC
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-windows.md", shell=True)
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
