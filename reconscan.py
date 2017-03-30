@@ -8,6 +8,7 @@ import fileinput
 import atexit
 import sys
 import socket
+import datetime
 
 # Todo:
 # Add mysql nmap-script
@@ -342,7 +343,7 @@ if __name__=='__main__':
     for scanip in targets:
         scanip = scanip.rstrip()
         if not scanip in dirs:
-            print date
+            print datetime.datetime.now()
             print bcolors.HEADER + "INFO: No folder was found for " + scanip + ". Setting up folder." + bcolors.ENDC
             subprocess.check_output("mkdir " + path + "exam/" + scanip, shell=True)
             subprocess.check_output("mkdir " + path + "exam/" + scanip + "/exploits", shell=True)
@@ -353,7 +354,7 @@ if __name__=='__main__':
             print bcolors.OKGREEN + "INFO: Added pentesting templates: " + path +"exam/" + scanip + bcolors.ENDC
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-windows.md", shell=True)
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
-            print date
+            print datetime.datetime.now()
 
 
 
