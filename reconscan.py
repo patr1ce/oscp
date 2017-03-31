@@ -355,8 +355,8 @@ if __name__=='__main__':
             subprocess.check_output("sed -i -e 's/INSERTIPADDRESS/" + scanip + "/g' " + path + "exam/" + scanip + "/mapping-linux.md", shell=True)
             
 
-        print bcolors.OKGREEN + datetime.datetime.now()
+        print bcolors.OKGREEN + str(datetime.datetime.now())
         p = multiprocessing.Process(target=nmapScan, args=(scanip,))
         p.start()
-        print bcolors.OKGREEN + datetime.datetime.now()
+        print bcolors.OKGREEN + str(datetime.datetime.now())
 
