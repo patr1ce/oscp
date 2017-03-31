@@ -71,28 +71,28 @@ def connect_to_port(ip_address, port, service):
 
 def write_to_file(ip_address, enum_type, data):
 
-    file_path_linux = path + 'exam/%s/mapping-linux.md' % (ip_address)
-    file_path_windows = path + 'exam/%s/mapping-windows.md' % (ip_address)
+    file_path_linux = '%sexam/%s/mapping-linux.md' % (path,ip_address)
+    file_path_windows = '%sexam/%s/mapping-windows.md' % (path,ip_address)
     paths = [file_path_linux, file_path_windows]
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
 
-    for path in paths:
+    for pat in paths:
         if enum_type == "portscan":
-            subprocess.check_output("replace INSERTTCPSCAN \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTTCPSCAN \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "dirb":
-            subprocess.check_output("replace INSERTDIRBSCAN \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTDIRBSCAN \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "nikto":
-            subprocess.check_output("replace INSERTNIKTOSCAN \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTNIKTOSCAN \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "ftp-connect":
-            subprocess.check_output("replace INSERTFTPTEST \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTFTPTEST \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "smtp-connect":
-            subprocess.check_output("replace INSERTSMTPCONNECT \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTSMTPCONNECT \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "ssh-connect":
-            subprocess.check_output("replace INSERTSSHCONNECT \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTSSHCONNECT \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "pop3-connect":
-            subprocess.check_output("replace INSERTPOP3CONNECT \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTPOP3CONNECT \"" + data + "\"  -- " + pat, shell=True)
         if enum_type == "curl":
-            subprocess.check_output("replace INSERTCURLHEADER \"" + data + "\"  -- " + path, shell=True)
+            subprocess.check_output("replace INSERTCURLHEADER \"" + data + "\"  -- " + pat, shell=True)
     return
 
 
