@@ -71,7 +71,7 @@ def connect_to_port(ip_address, port, service):
 
 def write_to_file(ip_address, enum_type, data):
 
-    file_path_linux = path + 'exitam/%s/mapping-linux.md' % (ip_address)
+    file_path_linux = path + 'exam/%s/mapping-linux.md' % (ip_address)
     file_path_windows = path + 'exam/%s/mapping-windows.md' % (ip_address)
     paths = [file_path_linux, file_path_windows]
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
