@@ -71,8 +71,8 @@ def connect_to_port(ip_address, port, service):
 
 def write_to_file(ip_address, enum_type, data):
 
-    file_path_linux = '%sexam/%s/mapping-linux.md' % (path,ip_address)
-    file_path_windows = '%sexam/%s/mapping-windows.md' % (path,ip_address)
+    file_path_linux = '{0}exam/{1}/mapping-linux.md'.format(path,ip_address)
+    file_path_windows = '{0}exam/{1}/mapping-windows.md'.format(path,ip_address)
     paths = [file_path_linux, file_path_windows]
     print bcolors.OKGREEN + "INFO: Writing " + enum_type + " to template files:\n " + file_path_linux + "   \n" + file_path_windows + bcolors.ENDC
 
@@ -99,7 +99,7 @@ def write_to_file(ip_address, enum_type, data):
 
 def dirb(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting dirb scan for " + ip_address + bcolors.ENDC
-    DIRBSCAN = "dirb %s://%s:%s -o " + path + "exam/%s/dirb-%s.txt -r" % (url_start, ip_address, port, ip_address, ip_address)
+    DIRBSCAN = "dirb {0}://{1}:{2} -o ".format(url_start, ip_address, port) + path + "exam/{0}/dirb-{1}.txt -r".format( ip_address, ip_address)
     print bcolors.HEADER + DIRBSCAN + bcolors.ENDC
     results_dirb = subprocess.check_output(DIRBSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with dirb scan for " + ip_address + bcolors.ENDC
@@ -109,7 +109,7 @@ def dirb(ip_address, port, url_start):
 
 def nikto(ip_address, port, url_start):
     print bcolors.HEADER + "INFO: Starting nikto scan for " + ip_address + bcolors.ENDC
-    NIKTOSCAN = "nikto -h %s://%s -o " + path + "exam/%s/nikto-%s-%s.txt" % (url_start, ip_address, ip_address, url_start, ip_address)
+    NIKTOSCAN = "nikto -h {0}://{1} -o ".format(url_start, ip_address) + path + "exam/{0}/nikto-{1}-{2}.txt".format( ip_address, url_start, ip_address)
     print bcolors.HEADER + NIKTOSCAN + bcolors.ENDC
     results_nikto = subprocess.check_output(NIKTOSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with NIKTO-scan for " + ip_address + bcolors.ENDC
@@ -128,10 +128,10 @@ def httpEnum(ip_address, port):
     nikto_process.start()
 
     CURLSCAN = "curl -I http://{0}".format(ip_address)
-    print bcolors.HEADER + CURLSCAN + bcolors.END
+    print bcolors.HEADER + CURLSCAN + bcolors.ENDC
     curl_results = subprocess.check_output(CURLSCAN, shell=True)
     write_to_file(ip_address, "curl", curl_results)
-    HTTPSCAN = "nmap -sV -Pn -vv -p {0} --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-methods,http-method-tamper,http-passwd,http-robots.txt,http-devframework,http-enum,http-frontpage-login,http-git,http-iis-webdav-vuln,http-php-version,http-robots.txt,http-shellshock,http-vuln-cve2015-1635 -oN /root/oscp/exam/{1}/{2}_http.nmap {3}".format(port, ip_address, ip_address, ip_address)
+    HTTPSCAN = "nmap -sV -Pn -vv -p {0} --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-methods,http-method-tamper,http-passwd,http-robots.txt,http-devframework,http-enum,http-frontpage-login,http-git,http-iis-webdav-vuln,http-php-version,http-robots.txt,http-shellshock,http-vuln-cve2015-1635 -oX /root/oscp/exam/{1}/nmap_{2}_http.xml {3}".format(port, ip_address, ip_address, ip_address)
     print bcolors.HEADER + HTTPSCAN + bcolors.ENDC
 
     http_results = subprocess.check_output(HTTPSCAN, shell=True)
@@ -155,7 +155,7 @@ def httpsEnum(ip_address, port):
     ssl_results = subprocess.check_output(SSLSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: CHECK FILE - Finished with SSLSCAN for " + ip_address + bcolors.ENDC
 
-    HTTPSCANS = "nmap -sV -Pn -vv -p {0} --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-methods,http-method-tamper,http-passwd,http-robots.txt,http-devframework,http-enum,http-frontpage-login,http-git,http-iis-webdav-vuln,http-php-version,http-robots.txt,http-shellshock,http-vuln-cve2015-1635 -oN ".format(port) + path + "exam/{0}/{1}_http.nmap {2}".format( ip_address, ip_address, ip_address)
+    HTTPSCANS = "nmap -sV -Pn -vv -p {0} --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-methods,http-method-tamper,http-passwd,http-robots.txt,http-devframework,http-enum,http-frontpage-login,http-git,http-iis-webdav-vuln,http-php-version,http-robots.txt,http-shellshock,http-vuln-cve2015-1635 -oX ".format(port) + path + "exam/{0}/nmap_{1}_http.xml {2}".format( ip_address, ip_address, ip_address)
     print bcolors.HEADER + HTTPSCANS + bcolors.ENDC
     https_results = subprocess.check_output(HTTPSCANS, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with HTTPS-scan for " + ip_address + bcolors.ENDC
@@ -165,7 +165,7 @@ def httpsEnum(ip_address, port):
 def mssqlEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected MS-SQL on " + ip_address + ":" + port + bcolors.ENDC
     print bcolors.HEADER + "INFO: Performing nmap mssql script scan for " + ip_address + ":" + port + bcolors.ENDC
-    MSSQLSCAN = "nmap -sV -Pn -p {0} --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -oN ".format(port) + path + "exam/{0}/mssql_{1}.nmap {2}".format(ip_address, ip_address, ip_address)
+    MSSQLSCAN = "nmap -sV -Pn -p {0} --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -oX ".format(port) + path + "exam/{0}/nmap_mssql_{1}.xml {2}".format(ip_address, ip_address, ip_address)
     print bcolors.HEADER + MSSQLSCAN + bcolors.ENDC
     mssql_results = subprocess.check_output(MSSQLSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with MSSQL-scan for " + ip_address + bcolors.ENDC
@@ -176,7 +176,7 @@ def mssqlEnum(ip_address, port):
 def smtpEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected smtp on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "smtp")
-    SMTPSCAN = "nmap -sV -Pn -p {0} --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 {1} -oN ".format(port, ip_address) + path + "{0}/smtp_{1}.nmap".format(ip_address, ip_address)
+    SMTPSCAN = "nmap -sV -Pn -p {0} --script=smtp-commands,smtp-enum-users,smtp-vuln-cve2010-4344,smtp-vuln-cve2011-1720,smtp-vuln-cve2011-1764 {1} -oX ".format(port, ip_address) + path + "{0}/nmap_smtp_{1}.xml".format(ip_address, ip_address)
     print bcolors.HEADER + SMTPSCAN + bcolors.ENDC
     smtp_results = subprocess.check_output(SMTPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with SMTP-scan for " + ip_address + bcolors.ENDC
@@ -186,7 +186,7 @@ def smtpEnum(ip_address, port):
 
 def smbNmap(ip_address, port):
     print "INFO: Detected SMB on " + ip_address + ":" + port
-    smbNmap = "nmap --script=smb-enum-shares.nse,smb-ls.nse,smb-enum-users.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-security-mode.nse,smbv2-enabled.nse,smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-regsvc-dos.nse,smbv2-enabled.nse {0} -oN ".format(ip_address) + path + "exam/{0}/smb_{1}.nmap".format(ip_address, ip_address)
+    smbNmap = "nmap --script=smb-enum-shares.nse,smb-ls.nse,smb-enum-users.nse,smb-mbenum.nse,smb-os-discovery.nse,smb-security-mode.nse,smbv2-enabled.nse,smb-vuln-cve2009-3103.nse,smb-vuln-ms06-025.nse,smb-vuln-ms07-029.nse,smb-vuln-ms08-067.nse,smb-vuln-ms10-054.nse,smb-vuln-ms10-061.nse,smb-vuln-regsvc-dos.nse,smbv2-enabled.nse {0} -oX ".format(ip_address) + path + "exam/{0}/nmap_smb_{1}.xml".format(ip_address, ip_address)
     smbNmap_results = subprocess.check_output(smbNmap, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with SMB-Nmap-scan for " + ip_address + bcolors.ENDC
     print smbNmap_results
@@ -203,7 +203,7 @@ def smbEnum(ip_address, port):
 def ftpEnum(ip_address, port):
     print bcolors.HEADER + "INFO: Detected ftp on " + ip_address + ":" + port  + bcolors.ENDC
     connect_to_port(ip_address, port, "ftp")
-    FTPSCAN = "nmap -sV -Pn -vv -p {0} --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oN '".format(port) + path + "exam/{0}/ftp_{1}.nmap' {2}".format(ip_address, ip_address, ip_address)
+    FTPSCAN = "nmap -sV -Pn -vv -p {0} --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221 -oX '".format(port) + path + "exam/{0}/nmap_ftp_{1}.xml' {2}".format(ip_address, ip_address, ip_address)
     print bcolors.HEADER + FTPSCAN + bcolors.ENDC
     results_ftp = subprocess.check_output(FTPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with ENUM4LINUX-Nmap-scan for " + ip_address + bcolors.ENDC
@@ -212,7 +212,7 @@ def ftpEnum(ip_address, port):
 
 def udpScan(ip_address):
     print bcolors.HEADER + "INFO: Detected UDP on " + ip_address + bcolors.ENDC
-    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN '" + path + "exam/{0}/udp_{1}.nmap' {2}".format(ip_address, ip_address, ip_address)
+    UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oX '" + path + "exam/{0}/nmap_udp_{1}.xml' {2}".format(ip_address, ip_address, ip_address)
     print bcolors.HEADER + UDPSCAN + bcolors.ENDC
     udpscan_results = subprocess.check_output(UDPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with UDP-Nmap scan for " + ip_address + bcolors.ENDC
@@ -235,7 +235,7 @@ def nmapScan(ip_address):
     print bcolors.OKGREEN + "INFO: Running general TCP/UDP nmap scans for " + ip_address + bcolors.ENDC
 
 
-    TCPSCAN = "nmap -sV -O %s -oN '%sexam/%s/%s.nmap'"  % (ip_address, path, ip_address, ip_address)
+    TCPSCAN = "nmap -sV -O %s -oX '%sexam/%s/nmap_%s.xml'"  % (ip_address, path, ip_address, ip_address)
     print bcolors.HEADER + TCPSCAN + bcolors.ENDC
     results = subprocess.check_output(TCPSCAN, shell=True)
     print bcolors.OKGREEN + "INFO: RESULT BELOW - Finished with BASIC Nmap-scan for " + ip_address + bcolors.ENDC
